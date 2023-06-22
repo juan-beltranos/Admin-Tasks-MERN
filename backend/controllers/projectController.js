@@ -1,4 +1,5 @@
 import Project from "../models/Project.js";
+import Task from "../models/Task.js";
 
 const getProjects = async (req, res) => {
     const projects = await Project.find().where('creator').equals(req.user)
@@ -18,6 +19,7 @@ const postProject = async (req, res) => {
 
 const getProject = async (req, res) => {
     const { id } = req.params
+
     try {
         const project = await Project.findById(id);
         if (!project) {
@@ -28,7 +30,11 @@ const getProject = async (req, res) => {
             const error = new Error("Accion no valida")
             return res.status(400).json({ message: error.message })
         }
-        res.json(project)
+
+        // Get task project
+        const tasks = await Task.find().where('project').equals(project._id)
+        
+        res.json({ project, tasks })
     } catch (error) {
         console.log(error);
     }
@@ -85,7 +91,4 @@ const postCollaborator = async (req, res) => { }
 
 const deleteCollaborator = async (req, res) => { }
 
-const getTasks = async (req, res) => { }
-
-
-export { getProjects, postProject, getProject, putProject, deleteProject, postCollaborator, deleteCollaborator, getTasks }
+export { getProjects, postProject, getProject, putProject, deleteProject, postCollaborator, deleteCollaborator }

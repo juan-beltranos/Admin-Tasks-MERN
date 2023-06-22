@@ -4,6 +4,7 @@ import conexionDB from './config/db.js';
 
 import userRouter from './routes/userRoutes.js';
 import projectRoutes from './routes/projectRoutes.js';
+import taskRoutes from './routes/taskRoutes.js';
 
 // Call express
 const app = express();
@@ -18,6 +19,7 @@ conexionDB();
 // Routing
 app.use('/api/users', userRouter);
 app.use('/api/projects', projectRoutes);
+app.use('/api/tasks', taskRoutes);
 
 // Run server
 const PORT = process.env.PORT || 4000
